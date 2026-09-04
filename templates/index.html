@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>PRANAB ASTRO TERMINAL</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #05070a; color: #fff; padding: 10px; display: flex; justify-content: center; font-size: 13px; }
+        .card { background: #121822; padding: 15px; border-radius: 10px; width: 750px; border: 1px solid #2d3a54; box-shadow: 0 5px 20px rgba(0,0,0,0.9); }
+        .title { font-size: 22px; font-weight: 900; text-align: center; color: #18ffff; text-shadow: 0 0 10px #00bfa5; margin-bottom: 5px; }
+        
+        .location-bar { text-align: center; font-size: 11px; color: #00e676; margin-bottom: 10px; font-weight: bold; }
+        .location-bar span { color: #b0bec5; font-weight: normal; }
+
+        select { background: #1a233a; color: #fff; padding: 6px; border: 1px solid #4a5568; border-radius: 4px; width: 100%; font-size: 14px; font-weight: bold; margin-bottom: 10px; cursor: pointer; outline: none; }
+        optgroup { color: #64b5f6; font-weight: 900; background: #0b0e14; }
+        
+        .control-panel { display: flex; gap: 10px; margin-bottom: 10px; }
+        .logic-box, .toggle-box { flex: 1; background: #0b0e14; padding: 8px; border-radius: 6px; border: 1px solid #1a2333; text-align: center; }
+        .logic-box h4 { margin: 0 0 5px 0; color: #ffeb3b; font-size: 12px; }
+        .control-label { margin-right: 10px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        
+        .grid { display: flex; gap: 10px; margin-bottom: 10px; }
+        .box { flex: 1; background: #0b0e14; padding: 10px; border-radius: 6px; border: 1px solid #1a2333; transition: opacity 0.3s; }
+        .box h3 { margin: 0 0 5px 0; font-size: 15px; }
+        .lord-text { font-size: 12px; margin: 4px 0; color: #b0bec5; }
+        .lord-val { font-weight: bold; color: #fff; }
+        .retro { color: #ff5252; font-size: 11px; font-style: italic; font-weight: bold; }
+        .relation-badge { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; margin-top: 3px; color: #000; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        
+        #finalSignal { font-size: 18px; font-weight: bold; text-align: center; padding: 10px; border-radius: 6px; margin-top: 5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+        
+        .timer-box { position: relative; text-align: center; font-size: 14px; font-weight: bold; color: #ffeb3b; margin-top: 10px; background: #11151c; padding: 8px; border-radius: 4px; border: 1px solid #29b6f6; overflow: hidden; }
+        .timer-text { position: relative; z-index: 2; }
+        .timer-line { position: absolute; bottom: 0; left: 0; height: 2px; width: 100%; background: rgba(255,255,255,0.05); z-index: 1; }
+        .timer-line::after { content: ""; position: absolute; top: 0; left: -50%; height: 100%; width: 50%; background: linear-gradient(90deg, transparent, #ff9800, #ffff00, #ff9800, transparent); animation: scanLine 2s linear infinite; }
+        @keyframes scanLine { 0% { left: -50%; } 100% { left: 100%; } }
+
+        .rp-box { text-align: center; margin-top: 10px; padding: 10px; background: linear-gradient(90deg, #002200, #001100); border-radius: 6px; border: 1px dashed #00e676; }
+        .rp-label { font-size: 10px; color: #90a4ae; text-transform: uppercase; margin-bottom: 3px;}
+        .rp-val { font-size: 12px; font-weight: bold; color: #00e676; }
+        .rp-grid { display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="title">PRANAB ASTRO TERMINAL</div>
+    <div class="location-bar">📍 <span id="locName">-</span> | Lat: <span id="locLat">-</span> | Lon: <span id="locLon">-</span></div>
+    
+    <select id="marketSelect">
+        <optgroup label="Indian Indices">
+            <option value="BANKNIFTY">🏢 Bank Nifty</option>
+            <option value="NIFTY50">📈 Nifty 50</option>
+            <option value="FINNIFTY">📊 Fin Nifty</option>
+        </optgroup>
+        <optgroup label="Commodities">
+            <option value="CRUDE" selected>🛢️ Crude Oil (WTI)</option>
+            <option value="GOLD">🥇 Gold</option>
+            <option value="NATGAS">🔥 Natural Gas</option>
+            <option value="SILVER">🥈 Silver</option>
+        </optgroup>
+        <optgroup label="Indian Stocks">
+            <option value="RELIANCE">🏭 Reliance</option>
+            <option value="HDFCBANK">🏦 HDFC Bank</option>
+            <option value="SBI">🏛️ SBI</option>
+        </optgroup>
+        <optgroup label="Forex">
+            <option value="EURUSD">💱 EUR/USD</option>
+            <option value="GBPUSD">💷 GBP/USD</option>
+            <option value="USDINR">💵 USD/INR</option>
+            <option value="EURINR">💶 EUR/INR</option>
+            <option value="GBPINR">💷 GBP/INR</option>
+            <option value="JPYINR">💴 JPY/INR</option>
+        </optgroup>
+    </select>
+
+    <div class="control-panel">
+        <div class="logic-box">
+            <h4>⚙️ SELECT TRADING LOGIC</h4>
+            <label class="control-label" style="color: #fff;"><input type="radio" name="logicType" value="friendship" checked onchange="fetchData()"> 🤝 Friendship</label>
+            <label class="control-label" style="color: #78909c;"><input type="radio" name="logicType" value="kphouses" onchange="fetchData()"> 🏠 KP Houses</label>
+        </div>
+        <div class="toggle-box">
+            <h4 style="margin: 0 0 5px 0; color: #29b6f6; font-size: 12px;">🎛️ MICRO/MACRO TOGGLE</h4>
+            <label class="control-label" style="color: #29b6f6;"><input type="checkbox" id="toggleLagna" checked onchange="fetchData()"> 🌟 Lagna</label>
+            <label class="control-label" style="color: #d500f9;"><input type="checkbox" id="toggleMoon" checked onchange="fetchData()"> 🌙 Moon</label>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="box" id="lagnaBox">
+            <h3 style="color: #29b6f6;">🌟 LAGNA (Micro)</h3>
+            <div class="lord-text">NL: <span class="lord-val" id="l_nl">-</span></div>
+            <div class="lord-text">SL: <span class="lord-val" id="l_sl">-</span></div>
+            <div class="lord-text">SSL: <span class="lord-val" id="l_ssl" style="color:#ff8f00;">-</span></div>
+            <div class="relation-badge" id="l_rel">-</div>
+            <div style="font-size: 10px; margin-top: 4px; color: #90a4ae;" id="l_ssl_power">-</div>
+        </div>
+        <div class="box" id="moonBox">
+            <h3 style="color: #d500f9;">🌙 MOON (Macro)</h3>
+            <div class="lord-text">NL: <span class="lord-val" id="m_nl">-</span></div>
+            <div class="lord-text">SL: <span class="lord-val" id="m_sl">-</span></div>
+            <div class="lord-text">SSL: <span class="lord-val" id="m_ssl" style="color:#ff8f00;">-</span></div>
+            <div class="relation-badge" id="m_rel">-</div>
+        </div>
+    </div>
+
+    <div id="finalSignal" style="background: #263238; border: 2px solid #455a64;">Waiting for Data...</div>
+    
+    <div class="timer-box">
+        <div class="timer-line"></div>
+        <div class="timer-text">⏳ Setup Valid For: <span id="timer">-</span></div>
+    </div>
+    
+    <div class="rp-box">
+        <h4 style="margin: 0 0 8px 0; color: #ffeb3b; font-size: 12px;">👑 KP RULING PLANETS</h4>
+        <div class="rp-grid">
+            <div><div class="rp-label">Day</div><div class="rp-val" id="rp_day">-</div></div>
+            <div><div class="rp-label">Moon Rashi</div><div class="rp-val" id="rp_mr">-</div></div>
+            <div><div class="rp-label">Moon Star</div><div class="rp-val" id="rp_mnl">-</div></div>
+            <div><div class="rp-label">Lagna Rashi</div><div class="rp-val" id="rp_lr">-</div></div>
+            <div><div class="rp-label">Lagna Star</div><div class="rp-val" id="rp_lnl">-</div></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function colorizeRetro(text) { return text.replace('(R)', '<span class="retro">(R)</span>'); }
+
+    async function fetchData() {
+        const market = document.getElementById('marketSelect').value;
+        try {
+            const res = await fetch(`/api/live_kp?market=${market}`);
+            const data = await res.json();
+            
+            if(data.status === "LIVE") {
+                document.getElementById('locName').innerText = data.location;
+                document.getElementById('locLat').innerText = data.lat;
+                document.getElementById('locLon').innerText = data.lon;
+
+                document.getElementById('l_nl').innerHTML = colorizeRetro(data.lagna.nl);
+                document.getElementById('l_sl').innerHTML = colorizeRetro(data.lagna.sl);
+                document.getElementById('l_ssl').innerHTML = colorizeRetro(data.lagna.ssl);
+                const lRel = document.getElementById('l_rel');
+                lRel.innerText = `${data.lagna.relation.replace(/ \(R\)/g, '')} ➔ ${data.lagna.signal}`;
+                lRel.style.backgroundColor = data.lagna.color;
+                document.getElementById('l_ssl_power').innerText = data.lagna.ssl_power.replace(/ \(R\)/g, '');
+
+                document.getElementById('m_nl').innerHTML = colorizeRetro(data.moon.nl);
+                document.getElementById('m_sl').innerHTML = colorizeRetro(data.moon.sl);
+                document.getElementById('m_ssl').innerHTML = colorizeRetro(data.moon.ssl);
+                const mRel = document.getElementById('m_rel');
+                mRel.innerText = `${data.moon.relation.replace(/ \(R\)/g, '')} ➔ ${data.moon.signal}`;
+                mRel.style.backgroundColor = data.moon.color;
+
+                const selectedLogic = document.querySelector('input[name="logicType"]:checked').value;
+                const lagnaActive = document.getElementById('toggleLagna').checked;
+                const moonActive = document.getElementById('toggleMoon').checked;
+
+                document.getElementById('lagnaBox').style.opacity = lagnaActive ? "1" : "0.3";
+                document.getElementById('moonBox').style.opacity = moonActive ? "1" : "0.3";
+
+                const finalBox = document.getElementById('finalSignal');
+                let currentSignal = "";
+
+                if (selectedLogic === "friendship") {
+                    document.getElementById('l_rel').style.display = 'inline-block';
+                    document.getElementById('m_rel').style.display = 'inline-block';
+                    
+                    if (lagnaActive && moonActive) currentSignal = data.final_signal; 
+                    else if (lagnaActive && !moonActive) currentSignal = `Lagna Only: ${data.lagna.signal}`; 
+                    else if (!lagnaActive && moonActive) currentSignal = `Moon Only: ${data.moon.signal}`; 
+                    else currentSignal = "SYSTEM PAUSED ⏸️"; 
+                } 
+                else if (selectedLogic === "kphouses") {
+                    document.getElementById('l_rel').style.display = 'none';
+                    document.getElementById('m_rel').style.display = 'none';
+                    currentSignal = "KP HOUSE LOGIC PENDING ⏳"; 
+                }
+
+                finalBox.innerText = currentSignal;
+
+                if(currentSignal.includes("BUY")) {
+                    finalBox.style.background = "linear-gradient(90deg, #1b5e20, #004d40)";
+                    finalBox.style.border = "2px solid #00e676";
+                } else if(currentSignal.includes("SELL")) {
+                    finalBox.style.background = "linear-gradient(90deg, #b71c1c, #880e4f)";
+                    finalBox.style.border = "2px solid #ff1744";
+                } else if(currentSignal.includes("PENDING")) {
+                    finalBox.style.background = "linear-gradient(90deg, #e65100, #ff8f00)";
+                    finalBox.style.border = "2px solid #ffca28";
+                } else {
+                    finalBox.style.background = "#263238";
+                    finalBox.style.border = "2px solid #455a64";
+                }
+
+                document.getElementById('timer').innerText = data.timer;
+                
+                document.getElementById('rp_day').innerText = data.rp.day;
+                document.getElementById('rp_mr').innerText = data.rp.moon_rashi;
+                document.getElementById('rp_mnl').innerText = data.rp.moon_star;
+                document.getElementById('rp_lr').innerText = data.rp.lagna_rashi;
+                document.getElementById('rp_lnl').innerText = data.rp.lagna_star;
+            }
+        } catch(e) { console.log("Waiting for server..."); }
+    }
+    
+    document.getElementById('marketSelect').addEventListener('change', fetchData);
+    // ৩ সেকেন্ডের বদলে ১৫ সেকেন্ড (১৫০০০ মিলি-সেকেন্ড) করা হলো
+    setInterval(fetchData, 15000);
+    fetchData();
+</script>
+</body>
+</html>
