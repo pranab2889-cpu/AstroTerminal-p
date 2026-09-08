@@ -196,11 +196,13 @@
 
                 document.getElementById('timer').innerText = data.timer;
                 
-                document.getElementById('rp_day').innerText = data.rp.day;
-                document.getElementById('rp_mr').innerText = data.rp.moon_rashi;
-                document.getElementById('rp_mnl').innerText = data.rp.moon_star;
-                document.getElementById('rp_lr').innerText = data.rp.lagna_rashi;
-                document.getElementById('rp_lnl').innerText = data.rp.lagna_star;
+                if (data.rp) {
+    document.getElementById('rp_day').innerText = data.rp.day || '-';
+    document.getElementById('rp_mr').innerText = data.rp.moon_rashi || '-';
+    document.getElementById('rp_mn1').innerText = data.rp.moon_star || '-';
+    document.getElementById('rp_lr').innerText = data.rp.lagna_rashi || '-';
+    document.getElementById('rp_ln1').innerText = data.rp.lagna_star || '-';
+}
             }
         } catch(e) { console.log("Waiting for server..."); }
     }
