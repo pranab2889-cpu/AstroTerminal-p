@@ -1,5 +1,7 @@
 Flask
 flask-cors
-pyswisseph
+pandas
 pytz
+pyswisseph
+requests
 gunicorn
