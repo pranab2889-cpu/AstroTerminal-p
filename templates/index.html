@@ -233,35 +233,35 @@
     async function fetchData() {
         const market = document.getElementById('marketSelect').value;
         try {
-            const res = await fetch(`/live_kp?market=${encodeURIComponent(market)}`);
+            const res = await fetch(`/api/live_kp?market=${encodeURIComponent(market)}`);
             if (!res.ok) {
                 console.error("HTTP error:", res.status);
                 return;
             }
             const data = await res.json();
 
-            // Location & Lat/Lon Handler
+            // Location & Coordinates
             if (data.location) {
                 document.getElementById('loc_text').innerText = data.location;
             }
             document.getElementById('lat_text').innerText = data.lat ?? data.latitude ?? "19.0760";
             document.getElementById('lon_text').innerText = data.lon ?? data.longitude ?? "72.8777";
 
-            // Lagna Values
+            // Lagna Section
             document.getElementById('lagna_nl').innerText = data.lagna_nl || '-';
             document.getElementById('lagna_nl_extra').innerText = data.lagna_nl_s ? `(${data.lagna_nl_s})` : '';
             document.getElementById('lagna_sl').innerText = data.lagna_sl || '-';
             document.getElementById('lagna_sl_extra').innerText = data.lagna_sl_s ? `(${data.lagna_sl_s})` : '';
             document.getElementById('lagna_ssl').innerText = data.lagna_ssl || '-';
 
-            // Moon Values
+            // Moon Section
             document.getElementById('moon_nl').innerText = data.moon_nl || '-';
             document.getElementById('moon_nl_extra').innerText = data.moon_nl_s ? `(${data.moon_nl_s})` : '';
             document.getElementById('moon_sl').innerText = data.moon_sl || '-';
             document.getElementById('moon_sl_extra').innerText = data.moon_sl_s ? `(${data.moon_sl_s})` : '';
             document.getElementById('moon_ssl').innerText = data.moon_ssl || '-';
 
-            // Status Box
+            // Main Status Box
             const finalBox = document.getElementById('finalStatusBox');
             if (data.bias_text) {
                 finalBox.innerText = `${data.bias_text} ${data.hist_text ? '— ' + data.hist_text : ''}`;
@@ -276,7 +276,7 @@
             document.getElementById('timerVal').innerText = data.time_left || data.timer || "-";
             document.getElementById('priceVal').innerText = data.price ? `${data.price} (${data.price_trend || ''})` : "-";
 
-            // Ruling Planets Handler
+            // KP Ruling Planets
             const rp = data.rp || {};
             document.getElementById('rp_day').innerText = rp.day || data.day_lord || '-';
             document.getElementById('rp_mr').innerText = rp.moon_rashi || data.moon_sign || '-';
